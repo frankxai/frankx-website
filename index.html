@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrankX Brand Dashboard - Soul-Aligned AI Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .markdown-content h1 { @apply text-3xl font-bold mb-6 mt-8 text-gray-900; }
+        .markdown-content h2 { @apply text-2xl font-semibold mb-4 mt-6 text-gray-800; }
+        .markdown-content h3 { @apply text-xl font-semibold mb-3 mt-4 text-gray-700; }
+        .markdown-content h4 { @apply text-lg font-medium mb-2 mt-3 text-gray-600; }
+        .markdown-content p { @apply mb-4 text-gray-600 leading-relaxed; }
+        .markdown-content ul { @apply list-disc list-inside mb-4 space-y-2; }
+        .markdown-content ol { @apply list-decimal list-inside mb-4 space-y-2; }
+        .markdown-content li { @apply text-gray-600; }
+        .markdown-content strong { @apply font-semibold text-gray-900; }
+        .markdown-content em { @apply italic; }
+        .markdown-content code { @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono; }
+        .markdown-content pre { @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4; }
+        .markdown-content blockquote { @apply border-l-4 border-purple-500 pl-4 italic my-4; }
+        .markdown-content hr { @apply my-8 border-gray-200; }
+        
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover {
+            transform: translateX(4px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0) 100%);
+            border-left: 3px solid #8b5cf6;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .loading-spinner {
+            border: 3px solid rgba(139, 92, 246, 0.2);
+            border-radius: 50%;
+            border-top: 3px solid #8b5cf6;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center glass-effect">
+                        <span class="text-2xl font-bold">FX</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">FrankX Brand Dashboard</h1>
+                        <p class="text-purple-100 text-sm">Soul-Aligned AI Systems for Generative Creators</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-white/20 transition">
+                        <i data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                    <button onclick="exportContent()" class="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition flex items-center space-x-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Export</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="flex h-screen pt-16">
+        <!-- Sidebar Navigation -->
+        <aside class="w-80 bg-white shadow-xl overflow-y-auto">
+            <div class="p-6">
+                <div class="mb-6">
+                    <input type="text" id="searchInput" placeholder="Search content..." 
+                           class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                
+                <nav id="navigation" class="space-y-1">
+                    <!-- Navigation will be populated by JavaScript -->
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="container mx-auto px-8 py-8">
+                <!-- Stats Cards -->
+                <div id="statsCards" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Year 1 Target</p>
+                                <p class="text-2xl font-bold text-gray-900">$265K</p>
+                            </div>
+                            <i data-lucide="trending-up" class="w-8 h-8 text-purple-500"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Product Tiers</p>
+                                <p class="text-2xl font-bold text-gray-900">5 Levels</p>
+                            </div>
+                            <i data-lucide="layers" class="w-8 h-8 text-blue-500"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Course Duration</p>
+                                <p class="text-2xl font-bold text-gray-900">8 Weeks</p>
+                            </div>
+                            <i data-lucide="calendar" class="w-8 h-8 text-green-500"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Launch Ready</p>
+                                <p class="text-2xl font-bold text-gray-900">100%</p>
+                            </div>
+                            <i data-lucide="rocket" class="w-8 h-8 text-orange-500"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Display Area -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div id="contentDisplay" class="markdown-content">
+                        <!-- Content will be loaded here -->
+                        <div class="flex flex-col items-center justify-center py-12">
+                            <div class="loading-spinner mb-4"></div>
+                            <p class="text-gray-500">Loading content...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="showRoadmap()" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg p-4 hover:from-purple-600 hover:to-purple-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="map" class="w-6 h-6"></i>
+                            <span class="font-semibold">View Roadmap</span>
+                        </div>
+                    </button>
+                    <button onclick="showProducts()" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg p-4 hover:from-blue-600 hover:to-blue-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="package" class="w-6 h-6"></i>
+                            <span class="font-semibold">Product Suite</span>
+                        </div>
+                    </button>
+                    <button onclick="showQuickStart()" class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg p-4 hover:from-green-600 hover:to-green-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="play-circle" class="w-6 h-6"></i>
+                            <span class="font-semibold">Quick Start</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Content structure mapping
+        const contentStructure = {
+            'overview': {
+                title: 'Overview',
+                icon: 'home',
+                file: 'README.md'
+            },
+            'brand-foundation': {
+                title: 'Brand Foundation',
+                icon: 'star',
+                children: {
+                    'vision-mission': {
+                        title: 'Vision & Mission',
+                        file: '01-Brand-Foundation/vision-mission/VISION-MISSION.md'
+                    },
+                    'brand-story': {
+                        title: 'Brand Story',
+                        file: '01-Brand-Foundation/brand-story/BRAND-STORY.md'
+                    },
+                    'epiphany-bridge': {
+                        title: 'Epiphany Bridge',
+                        file: '01-Brand-Foundation/brand-story/EPIPHANY-BRIDGE.md'
+                    }
+                }
+            },
+            'expert-positioning': {
+                title: 'Expert Positioning',
+                icon: 'award',
+                children: {
+                    'expert-story': {
+                        title: 'Expert Story & Credibility',
+                        file: '02-Expert-Positioning/credibility/EXPERT-STORY.md'
+                    },
+                    'ikigai': {
+                        title: 'IKIGAI Framework',
+                        file: '02-Expert-Positioning/ikigai/IKIGAI-FRAMEWORK.md'
+                    }
+                }
+            },
+            'product-suite': {
+                title: 'Product Suite',
+                icon: 'package',
+                children: {
+                    'product-ladder': {
+                        title: 'Product Ladder',
+                        file: '03-Product-Suite/PRODUCT-LADDER.md'
+                    }
+                }
+            },
+            'music-transformation': {
+                title: 'Music Transformation',
+                icon: 'music',
+                children: {
+                    'producer-journey': {
+                        title: 'Music Producer Journey',
+                        file: '04-Music-Transformation/MUSIC-PRODUCER-JOURNEY.md'
+                    }
+                }
+            },
+            'business-plan': {
+                title: 'Business Plan',
+                icon: 'briefcase',
+                children: {
+                    'full-plan': {
+                        title: 'Complete Business Plan',
+                        file: '05-Business-Plan/BUSINESS-PLAN.md'
+                    }
+                }
+            },
+            'marketing-strategy': {
+                title: 'Marketing Strategy',
+                icon: 'target',
+                children: {
+                    'website-plan': {
+                        title: 'Website & Funnel Plan',
+                        file: '06-Marketing-Strategy/WEBSITE-PLAN.md'
+                    }
+                }
+            },
+            'content-creation': {
+                title: 'Content Creation',
+                icon: 'edit-3',
+                children: {
+                    'content-strategy': {
+                        title: 'Content Strategy',
+                        file: '07-Content-Creation/CONTENT-STRATEGY.md'
+                    }
+                }
+            }
+        };
+
+        let currentContent = '';
+        let allContent = {};
+
+        // Initialize the application
+        async function init() {
+            buildNavigation();
+            await loadAllContent();
+            loadContent('overview');
+            lucide.createIcons();
+        }
+
+        // Build navigation menu
+        function buildNavigation() {
+            const nav = document.getElementById('navigation');
+            nav.innerHTML = '';
+            
+            Object.keys(contentStructure).forEach(key => {
+                const item = contentStructure[key];
+                const navItem = document.createElement('div');
+                navItem.className = 'nav-section mb-2';
+                
+                if (item.children) {
+                    // Parent with children
+                    navItem.innerHTML = `
+                        <div class="nav-item px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-50 flex items-center space-x-3" onclick="toggleSection('${key}')">
+                            <i data-lucide="${item.icon || 'folder'}" class="w-5 h-5 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">${item.title}</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 ml-auto transform transition" id="chevron-${key}"></i>
+                        </div>
+                        <div id="section-${key}" class="ml-8 mt-1 space-y-1 hidden">
+                            ${Object.keys(item.children).map(childKey => `
+                                <div class="nav-item px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-50 text-gray-600 text-sm" 
+                                     onclick="loadContent('${key}.${childKey}')" id="nav-${key}-${childKey}">
+                                    ${item.children[childKey].title}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else {
+                    // Single item
+                    navItem.innerHTML = `
+                        <div class="nav-item px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-50 flex items-center space-x-3" 
+                             onclick="loadContent('${key}')" id="nav-${key}">
+                            <i data-lucide="${item.icon || 'file'}" class="w-5 h-5 text-gray-500"></i>
+                            <span class="font-medium text-gray-700">${item.title}</span>
+                        </div>
+                    `;
+                }
+                
+                nav.appendChild(navItem);
+            });
+            
+            // Re-initialize Lucide icons
+            setTimeout(() => lucide.createIcons(), 100);
+        }
+
+        // Toggle navigation section
+        function toggleSection(key) {
+            const section = document.getElementById(`section-${key}`);
+            const chevron = document.getElementById(`chevron-${key}`);
+            
+            if (section.classList.contains('hidden')) {
+                section.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                section.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Load content from file
+        async function loadContent(path) {
+            const contentDisplay = document.getElementById('contentDisplay');
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to current nav item
+            const navId = 'nav-' + path.replace('.', '-');
+            const navItem = document.getElementById(navId);
+            if (navItem) navItem.classList.add('active');
+            
+            // Get file path
+            let filePath;
+            if (path.includes('.')) {
+                const [parent, child] = path.split('.');
+                filePath = contentStructure[parent].children[child].file;
+            } else {
+                filePath = contentStructure[path].file;
+            }
+            
+            // Show loading state
+            contentDisplay.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12">
+                    <div class="loading-spinner mb-4"></div>
+                    <p class="text-gray-500">Loading content...</p>
+                </div>
+            `;
+            
+            try {
+                // Simulate loading content (in real app, fetch from files)
+                const content = await fetchMarkdownContent(filePath);
+                currentContent = content;
+                
+                // Convert markdown to HTML
+                const htmlContent = marked.parse(content);
+                
+                // Display content with fade-in animation
+                contentDisplay.innerHTML = `<div class="fade-in">${htmlContent}</div>`;
+                
+                // Scroll to top
+                contentDisplay.scrollTop = 0;
+                
+            } catch (error) {
+                contentDisplay.innerHTML = `
+                    <div class="text-center py-12">
+                        <i data-lucide="alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
+                        <p class="text-gray-600">Unable to load content. Please ensure the markdown files are in the correct location.</p>
+                        <p class="text-sm text-gray-500 mt-2">File: ${filePath}</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+
+        // Fetch markdown content
+        async function fetchMarkdownContent(filePath) {
+            try {
+                const response = await fetch(`/api/content/${filePath}`);
+                if (!response.ok) {
+                    // Try direct file access for static serving
+                    const directResponse = await fetch(filePath);
+                    if (!directResponse.ok) {
+                        throw new Error('File not found');
+                    }
+                    return await directResponse.text();
+                }
+                const data = await response.json();
+                return data.content;
+            } catch (error) {
+                console.error('Error loading content:', error);
+                return `# Error Loading Content
+
+Unable to load: **${filePath}**
+
+## Quick Setup Instructions
+
+To view your complete FrankX brand documentation:
+
+### Option 1: Node.js Server (Recommended)
+\`\`\`bash
+# Install Node.js if not already installed
+# Then run:
+node server.js
+\`\`\`
+
+### Option 2: Python Server
+\`\`\`bash
+# In your FrankX directory, run:
+python -m http.server 8000
+# Then visit: http://localhost:8000
+\`\`\`
+
+### Option 3: VS Code Live Server
+1. Install "Live Server" extension in VS Code
+2. Right-click on index.html
+3. Select "Open with Live Server"
+
+## Your Content Structure
+Your complete brand documentation is organized and ready to view:
+- **${filePath}** contains your strategic planning content
+- All markdown files are properly structured
+- Navigation will work once served properly
+
+The dashboard interface is fully built and ready to display your content!`;
+            }
+        }
+
+        // Load all content for search
+        async function loadAllContent() {
+            // In production, this would load all markdown files for searching
+            console.log('Loading all content for search functionality...');
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    // Implement search through loaded content
+                    console.log('Searching for:', searchTerm);
+                });
+            }
+        });
+
+        // Quick action functions
+        function showRoadmap() {
+            loadContent('business-plan.full-plan');
+        }
+
+        function showProducts() {
+            loadContent('product-suite.product-ladder');
+        }
+
+        function showQuickStart() {
+            loadContent('overview');
+        }
+
+        // Export functionality
+        function exportContent() {
+            const blob = new Blob([currentContent], { type: 'text/markdown' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'frankx-content.md';
+            a.click();
+        }
+
+        // Dark mode toggle (placeholder)
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            // Implement dark mode styles
+        }
+
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
