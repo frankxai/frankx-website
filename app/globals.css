@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -18,16 +18,39 @@
   .text-balance {
     text-wrap: balance;
   }
-  
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 via-pink-600 to-blue-600 bg-clip-text text-transparent;
-  }
-  
-  .gradient-bg {
-    @apply bg-gradient-to-br from-primary-500 via-purple-600 to-pink-600;
-  }
-  
-  .glass-effect {
-    @apply bg-white/10 backdrop-blur-lg border border-white/20;
-  }
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-to-content:focus {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  background-color: #8b5cf6;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+  z-index: 9999;
+  text-decoration: none;
 }

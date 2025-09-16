@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+module.exports = {\n  safelist: ['bg-primary', 'text-primary-foreground', 'focus:bg-primary', 'focus:text-primary-foreground', 'focus:ring-primary-300'],
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         primary: {
+          DEFAULT: '#8b5cf6',
           50: '#f5f3ff',
           100: '#ede9fe',
           200: '#ddd6fe',
@@ -24,7 +25,8 @@ module.exports = {
           purple: '#8b5cf6',
           pink: '#ec4899',
           blue: '#3b82f6',
-        }
+        },
+        'primary-foreground': '#ffffff'
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
@@ -39,3 +41,4 @@ module.exports = {
   },
   plugins: [],
 }
+
