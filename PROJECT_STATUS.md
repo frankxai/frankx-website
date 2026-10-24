@@ -40,9 +40,8 @@
 ### Immediate (Today)
 1. **Deploy to Vercel** 
    ```bash
-   cd /mnt/c/Users/Frank/FrankX
+   cd frankx-website
    npm install
-   npx create-next-app@latest . --typescript --tailwind --app
    npm run build
    # Deploy via Vercel CLI or GitHub integration
    ```
@@ -83,7 +82,7 @@
 
 ## 🔗 KEY LINKS
 - **GitHub Repo**: https://github.com/frankxai/frankx-website.git
-- **Local Path**: /mnt/c/Users/Frank/FrankX/
+- **Local Path**: frankx-website
 - **Current Branch**: main
 
 ## 📝 RECOMMENDATIONS FOR CONTINUATION
