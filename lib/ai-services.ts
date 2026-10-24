@@ -10,7 +10,7 @@ export interface ConsciousnessContext {
   alignmentScore: number
 }
 
-export interface AIResponse<T = any> {
+export interface AIResponse<T = unknown> {
   data: T
   consciousness: {
     alignment: number
@@ -107,7 +107,7 @@ First Three Steps:
     }
   }
 
-  async recommendIntelligenceStack(context: ConsciousnessContext, preferences: Record<string, any> = {}) {
+  async recommendIntelligenceStack(context: ConsciousnessContext, preferences: Record<string, unknown> = {}) {
     const stack = {
       platform: context.level === 'Service' ? 'Notion + Automations' : 'Linear + GitHub',
       agent: context.level === 'Surrender' ? 'Frequency Navigator' : 'Strategist Architect',
